@@ -1,30 +1,24 @@
-# Command line apps in Rust
+# Rust로 작성된 명령줄 앱
 
-Rust is a statically compiled, fast language with great tooling and a rapidly growing ecosystem.
-That makes it a great fit for writing command line applications:
-They should be small, portable, and quick to run.
-Command line applications are also a great way to get started with learning Rust;
-or to introduce Rust to your team!
+Rust는 정적 컴파일, 빠른 속도를 자랑하는 언어로 훌륭한 도구와 빠르게 성장하는 생태계를 가지고 있습니다.
+이러한 특징 때문에 명령줄 앱을 작성하는 데 적합합니다.
+명령줄 앱은 작고 휴대성이 좋으며 빠르게 실행되어야 합니다.
+명령줄 앱은 Rust를 배우는 데도, 팀에 Rust를 소개하는 데도 좋은 방법입니다!
 
-Writing a program with a simple command line interface (CLI)
-is a great exercise for a beginner
-who is new to the language and wants to get a feel for it.
-There are many aspects to this topic, though,
-that often only reveal themselves later on.
+단순한 명령줄 인터페이스(CLI)를 가진 프로그램을 작성하는 것은
+언어에 익숙하지 않은 초보자에게 좋은 연습이 될 수 있습니다.
+그러나 이 주제에는 많은 측면이 있으며,
+이러한 측면이 종종 나중에만 드러나기도 합니다.
 
-This book is structured like this:
-We start with a quick tutorial,
-after which you'll end up with a working CLI tool.
-You'll be exposed to a few of the core concepts of Rust
-as well as the main aspects of CLI applications.
-What follows are chapters that go into more detail
-on some of these aspects.
+이 책은 다음과 같은 구조로 구성되어 있습니다:
+우선 빠른 튜토리얼로 시작하여, 마지막에는 작동하는 CLI 도구를 만들 수 있습니다.
+Rust의 핵심 개념 몇 가지와 CLI 앱의 주요 측면에 대해 알아볼 수 있습니다.
+그 다음에는 이러한 측면에 대한 자세한 내용을 다루는 챕터가 있습니다.
 
-One last thing before we dive right into CLI applications:
-If you find an error in this book
-or want to help us write more content for it,
-you can find its source [in the CLI book repository][book-src].
-We'd love to hear your feedback!
-Thank you!
+CLI 앱에 뛰어들기 전에 마지막으로 한 가지 말씀드리자면:
+이 책에서 오류를 발견하거나 더 많은 콘텐츠를 작성하는 데 도움이 되고 싶다면,
+CLI 책 리포지토리[책-src]에서 원본을 찾을 수 있습니다.
+피드백을 주시면 감사하겠습니다!
+감사합니다!
 
-[book-src]: https://github.com/rust-cli/book
+[책-src]: https://github.com/rust-cli/book

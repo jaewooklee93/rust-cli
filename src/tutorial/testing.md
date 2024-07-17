@@ -1,49 +1,45 @@
-# Testing
+# 테스트
 
-Over decades of software development,
-people have discovered one truth:
-Untested software rarely works.
-(Many people would go as far as saying:
-"Most tested software doesn't work either."
-But we are all optimists here, right?)
-So, to ensure that your program does what you expect it to do,
-it is wise to test it.
+수십 년 동안 소프트웨어 개발을 해온 사람들은
+한 가지 진리를 발견했습니다.
+테스트되지 않은 소프트웨어는 거의 작동하지 않습니다.
+(많은 사람들이 말할 수 있습니다.
+"테스트된 소프트웨어도 대부분 작동하지 않습니다."
+하지만 우리는 모두 낙관주의자죠, 맞죠?)
+따라서 프로그램이 기대하는 대로 작동하도록 하려면
+테스트하는 것이 좋습니다.
 
-One easy way to do that is
-to write a `README` file
-that describes what your program should do.
-And when you feel ready to make a new release,
-go through the `README` and ensure that
-the behavior is still as expected.
-You can make this a more rigorous exercise
-by also writing down how your program should react to erroneous inputs.
+그렇게 하기 위한 쉬운 방법은
+프로그램이 무엇을 해야 하는지 설명하는 `README` 파일을 작성하는 것입니다.
+그리고 새로운 버전을 출시할 준비가 되었을 때,
+`README`를 살펴보고
+동작이 여전히 기대대로 유지되는지 확인하십시오.
+잘못된 입력에 대해 프로그램이 어떻게 반응해야 하는지도 적어두면
+더 철저한 연습이 될 수 있습니다.
 
-Here's another fancy idea:
-Write that `README` before you write the code.
+다음은 또 다른 멋진 아이디어입니다.
+코드를 작성하기 전에 그 `README`를 작성하십시오.
 
 <aside>
 
-**Note:**
-Have a look at
-[test-driven development] (TDD)
-if you haven't heard of it.
-
-[test-driven development]: https://en.wikipedia.org/wiki/Test-driven_development
+**참고:**
+테스트 주도 개발에 대해 알아보지 않았다면
+[테스트 주도 개발](https://ko.wikipedia.org/wiki/테스트_주도_개발)을 참조하십시오.
 
 
 </aside>
 
-## Automated testing
+## 자동화된 테스트
 
-Now, this is all fine and dandy,
-but doing all of this manually?
-That can take a lot of time.
-At the same time,
-many people have come to enjoy telling computers to do things for them.
-Let's talk about how to automate these tests.
+이제까지는 잘 되고 있겠지만,
+모든 것을 수동으로 하는 것은?
+꽤 시간이 오래 걸릴 수 있습니다.
+동시에,
+많은 사람들이 컴퓨터에게 일을 하도록 지시하는 것을 즐기게 되었습니다.
+테스트를 자동화하는 방법에 대해 알아보겠습니다.
 
-Rust has a built-in test framework,
-so let's start by writing a first test:
+Rust는 내장된 테스트 프레임워크를 가지고 있으므로,
+첫 번째 테스트를 작성해 보겠습니다:
 
 ```rust,ignore
 # fn answer() -> i32 {
@@ -56,20 +52,18 @@ fn check_answer_validity() {
 }
 ```
 
-You can put this snippet of code in pretty much any file
-and `cargo test` will find
-and run it.
-The key here is the `#[test]` attribute.
-It allows the build system to discover such functions
-and run them as tests,
-verifying that they don't panic.
+이 코드 스니펫을 거의 모든 파일에 넣을 수 있으며
+`cargo test`가 찾아서 실행합니다.
+핵심은 `#[test]` 속성입니다.
+이 속성을 통해 빌드 시스템이 이러한 함수를 찾아 테스트로 실행하고
+panic하지 않는지 확인할 수 있습니다.
 
 <aside class="exercise">
 
-**Exercise for the reader:**
-Make this test work.
+**독자를 위한 연습:**
+이 테스트를 작동하게 하세요.
 
-You should end up with output like the following:
+다음과 같은 출력이 나오도록 해야 합니다.
 
 ```text
 running 1 test
@@ -80,35 +74,27 @@ test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out
 
 </aside>
 
-Now that we've seen *how* we can write tests,
-we still need to figure out *what* to test.
-As you've seen it's fairly easy to write assertions
-for functions.
-But a CLI application is often more than one function!
-Worse, it often deals with user input,
-reads files,
-and writes output.
+이제 테스트를 *어떻게* 작성하는지 알았으므로,
+*무엇을* 테스트해야 하는지 알아야 합니다.
+보셨듯이 함수에 대한 단언을 작성하는 것은 상대적으로 쉽습니다.
+하지만 CLI 애플리케이션은 종종 하나의 함수 이상으로 구성됩니다!
+더 나아가 사용자 입력, 파일 읽기 및 출력 작성과 같은 작업을 처리하는 경우가 많습니다.
 
-## Making your code testable
+## 코드를 테스트 가능하게 만들기
 
-There are two complementary approaches to testing functionality:
-Testing the small units that you build your complete application from,
-these are called "unit tests".
-There is also testing the final application "from the outside"
-called "black box tests" or "integration tests".
-Let's begin with the first one.
+함수의 기능을 테스트하는 데 두 가지 보완적인 접근 방식이 있습니다.
 
-To figure out what we should test,
-let's see what our program features are.
-Mainly, `grrs` is supposed to print out the lines that match a given pattern.
-So, let's write unit tests for _exactly this_:
-We want to ensure that our most important piece of logic works,
-and we want to do it in a way that is not dependent
-on any of the setup code we have around it
-(that deals with CLI arguments, for example).
+* 작은 단위를 테스트하는 방법: 이를 '단위 테스트'라고 합니다.
+* 완전한 애플리케이션을 '외부'에서 테스트하는 방법: 이를 '검은 상자 테스트' 또는 '통합 테스트'라고 합니다.
 
-Going back to our [first implementation](impl-draft.md) of `grrs`,
-we added this block of code to the `main` function:
+먼저 첫 번째 방법에 대해 알아보겠습니다.
+
+테스트해야 할 내용을 파악하기 위해 프로그램의 기능을 살펴보겠습니다.
+주로 `grrs`는 주어진 패턴에 맞는 줄을 출력하도록 설계되었습니다.
+따라서 이 _정확히_에 대한 단위 테스트를 작성해야 합니다.
+가장 중요한 논리 부분이 제대로 작동하는지 확인하고 싶으며, CLI 인수와 같은 주변 코드에 의존하지 않고 이를 수행해야 합니다.
+
+처음에 작성한 `grrs`의 [첫 번째 구현](impl-draft.md) 에서 `main` 함수에 다음 코드 블록을 추가했습니다.
 
 ```rust,ignore
 // ...
@@ -119,9 +105,9 @@ for line in content.lines() {
 }
 ```
 
-Sadly, this is not very easy to test.
-First of all, it's in the main function, so we can't easily call it.
-This is easily fixed by moving this piece of code into a function:
+안타깝게도 이것은 테스트하기가 매우 어렵습니다.
+첫째, 메인 함수에 있기 때문에 쉽게 호출할 수 없습니다.
+이것은 코드를 함수로 옮겨서 쉽게 해결할 수 있습니다.
 
 ```rust,no_run
 fn find_matches(content: &str, pattern: &str) {
@@ -133,8 +119,7 @@ fn find_matches(content: &str, pattern: &str) {
 }
 ```
 
-Now we can call this function in our test,
-and see what its output is:
+이제 우리는 이 함수를 테스트에서 호출하고, 그 출력을 볼 수 있습니다:
 
 ```rust,ignore
 #[test]
@@ -143,103 +128,71 @@ fn find_a_match() {
     assert_eq!( // uhhhh
 ```
 
-Or… can we?
-Right now, `find_matches` prints directly to `stdout`, i.e., the terminal.
-We can't easily capture this in a test!
-This is a problem that often comes up
-when writing tests after the implementation:
-We have written a function that is firmly integrated
-in the context it is used in.
+아니요… 아니면 어떻게 할 수 있을까요?
+지금 `find_matches`는 직접 `stdout` (터미널)로 출력합니다.
+우리가 이를 테스트에서 쉽게 캡처할 수는 없습니다!
+
+이것은 구현 후 테스트를 작성할 때 자주 발생하는 문제입니다.
+우리는 사용되는 맥락에 깊이 결합된 함수를 작성했습니다.
 
 <aside class="note">
 
-**Note:**
-This is totally fine when writing small CLI applications.
-There's no need to make everything testable!
-It is important to think about
-which parts of your code you might want to write unit tests for, however.
-While we'll see that it's easy to change this function to be testable,
-this is not always the case.
+**참고:**
+작은 CLI 애플리케이션을 작성할 때는 이것이 완벽합니다.
+모든 것을 테스트 가능하게 만들 필요는 없습니다!
+하지만 코드의 어떤 부분을 단위 테스트로 작성할지 고려하는 것이 중요합니다.
+우리가 이 함수를 테스트 가능하게 변경하는 것이 쉬운 것처럼 보이지만,
+항상 그런 것은 아닙니다.
 
 </aside>
 
-Alright, how can we make this testable?
-We'll need to capture the output somehow.
-Rust's standard library has some neat abstractions
-for dealing with I/O (input/output)
-and we'll make use of one called [`std::io::Write`].
-This is a [trait][trpl-traits] that abstracts over things we can write to,
-which includes strings but also `stdout`.
+그렇다면 이것을 테스트 가능하게 어떻게 만들 수 있을까요?
+어떻게든 출력을 캡처해야 합니다.
+Rust의 표준 라이브러리는 입력/출력(I/O)을 처리하는 데 유용한 추상화를 제공하며, 우리는 `std::io::Write`라고 불리는 것을 사용할 것입니다.
+`std::io::Write`는 우리가 쓸 수 있는 것에 대한 추상화를 제공하는 [trait](https://doc.rust-lang.org/book/ch10-02-traits.html)입니다. 이에는 문자열뿐만 아니라 `stdout`도 포함됩니다.
 
-[trpl-traits]: https://doc.rust-lang.org/book/ch10-02-traits.html
-[`std::io::Write`]: https://doc.rust-lang.org/1.39.0/std/io/trait.Write.html
+만약 이전에 Rust에서 "trait"라는 용어를 들었던 적이 없다면,
+흥미로운 경험을 할 것입니다.
+Trait는 Rust에서 가장 강력한 기능 중 하나입니다.
+Java의 인터페이스 또는 Haskell의 타입 클래스(어떤 것이 더 익숙한지에 따라)와 같이 생각할 수 있습니다.
+그들은 다양한 유형에서 공유될 수 있는 동작을 추상화할 수 있습니다.
+Trait를 사용하는 코드는 매우 일반적이고 유연한 방식으로 아이디어를 표현할 수 있습니다.
+이것은 동시에 이해하기 어려울 수도 있습니다.
+두려워하지 마세요: Rust를 오랫동안 사용해 온 사람들조차도 일반적인 코드가 무엇을 하는지 즉시 이해하지 못하는 경우가 있습니다.
+그럴 때는 구체적인 사용 사례를 생각하는 것이 도움이 됩니다.
+예를 들어, 우리의 경우, 추상화하는 동작은 "쓰기"입니다.
+("impl")을 구현하는 유형의 예는 다음과 같습니다.
+터미널의 표준 출력, 파일, 메모리 버퍼 또는 TCP 네트워크 연결.
+(`std::io::Write` [문서](https://doc.rust-lang.org/1.39.0/std/io/trait.Write.html)에서 "Implementors" 목록을 확인하세요.)
 
-If this is the first time you've heard "trait"
-in the context of Rust,
-you are in for a treat.
-Traits are one of the most powerful features of Rust.
-You can think of them like interfaces in Java,
-or type classes in Haskell
-(whatever you are more familiar with).
-They allow you to abstract over behavior
-that can be shared by different types.
-Code that uses traits can
-express ideas in very generic and flexible ways.
-This means it can also get difficult to read, though.
-Don't let that intimidate you:
-Even people who have used Rust for years
-don't always get what generic code does immediately.
-In that case,
-it helps to think of concrete uses.
-For example,
-in our case,
-the behavior that we abstract over is "write to it".
-Examples for the types that implement ("impl") it
-include:
-The terminal's standard output,
-files,
-a buffer in memory,
-or TCP network connections.
-(Scroll down in the [documentation for `std::io::Write`][`std::io::Write`]
-to see a list of "Implementors".)
-
-With that knowledge,
-let's change our function to accept a third parameter.
-It should be of any type that implements `Write`.
-This way,
-we can then supply a simple string
-in our tests
-and make assertions on it.
-Here is how we can write this version of `find_matches`:
+이 지식을 바탕으로 함수를 수정하여 세 번째 매개변수를 추가합니다.
+이 매개변수는 `Write`를 구현하는 유형이어야 합니다.
+이렇게 하면 테스트에서 간단한 문자열을 제공하고 그에 대한 주장을 할 수 있습니다.
+`find_matches`의 이 버전을 작성하는 방법은 다음과 같습니다:
 
 ```rust,ignore
 {{#include testing/src/main.rs:23:29}}
 ```
 
-The new parameter is `mut writer`,
-i.e., a mutable thing we call "writer".
-Its type is `impl std::io::Write`,
-which you can read as
-"a placeholder for any type that implements the `Write` trait".
-Also note how we
-replaced the `println!(…)`
-we used earlier
-with `writeln!(writer, …)`.
-`println!` works the same as `writeln!`
-but always uses standard output.
+새로운 매개변수는 `mut writer`입니다.
+즉, 우리가 "writer"라고 부르는 변경 가능한 객체입니다.
+그 유형은 `impl std::io::Write`이며,
+"`Write` trait를 구현하는 모든 유형의 자리 표시자"로 읽을 수 있습니다.
+또한 이전에 사용했던 `println!(…)`를
+`writeln!(writer, …)`로 대체했다는 점에 유의하십시오.
+`println!`은 `writeln!`와 동일하게 작동하지만 항상 표준 출력을 사용합니다.
 
-Now we can test for the output:
+이제 출력을 테스트할 수 있습니다.
 
 ```rust,ignore
 {{#include testing/src/main.rs:31:36}}
 ```
 
-To now use this in our application code,
-we have to change the call to `find_matches` in `main`
-by adding [`&mut std::io::stdout()`][stdout] as the third parameter.
-Here's an example of a main function
-that builds on what we've seen in the previous chapters
-and uses our extracted `find_matches` function:
+이제 이를 애플리케이션 코드에서 사용하려면,
+`main`에서 `find_matches` 함수의 호출을 변경해야 합니다.
+[`&mut std::io::stdout()`][stdout]를 세 번째 매개변수로 추가해야 합니다.
+다음은 이전 챕터에서 살펴본 내용을 기반으로
+`find_matches` 함수를 사용하는 `main` 함수의 예입니다:
 
 ```rust,ignore
 {{#include testing/src/main.rs:13:21}}
@@ -249,169 +202,136 @@ and uses our extracted `find_matches` function:
 
 <aside class="note">
 
-**Note:**
-Since `stdout` expects bytes (not strings),
-we use `std::io::Write` instead of `std::fmt::Write`.
-As a result,
-we give an empty vector as "writer" in our tests
-(its type will be inferred to `Vec<u8>`),
-in the `assert_eq!` we use a `b"foo"`.
-(The `b` prefix makes this a _byte string literal_
-so its type is going to be `&[u8]` instead of `&str`).
+**참고:**
+`stdout`는 문자열이 아닌 바이트를 기대하기 때문에,
+`std::io::Write`를 `std::fmt::Write` 대신 사용합니다.
+따라서 테스트에서 "작성자"로 빈 벡터를 제공합니다.
+(유형은 `Vec<u8>`로 추론됩니다).
+`assert_eq!`에서 `b"foo"`를 사용합니다.
+( `b` 접두사는 이를 바이트 문자열 리터럴로 만듭니다.
+따라서 유형은 `&[u8]`가 아니라 `&str`가 됩니다). 
 
 </aside>
 
 <aside class="note">
 
-**Note:**
-We could also make this function return a `String`,
-but that would change its behavior.
-Instead of writing to the terminal directly,
-it would then collect everything into a string,
-and dump all the results in one go at the end.
+**참고:**
+이 함수를 `String`을 반환하도록 만들 수도 있지만,
+그렇게 하면 동작이 변경됩니다.
+터미널에 직접 쓰는 대신,
+모든 내용을 문자열로 모아서 끝에 한 번에 모두 출력합니다.
 
 </aside>
 
 <aside class="exercise">
 
-**Exercise for the reader:**
-[`writeln!`] returns an [`io::Result`]
-because writing can fail,
-for example when the buffer is full and cannot be expanded.
-Add error handling to `find_matches`.
+**독자를 위한 연습:**
+[`writeln!`]는 [`io::Result`]를 반환합니다.
+쓰기가 실패할 수 있기 때문입니다.
+예를 들어 버퍼가 가득 차서 확장할 수 없는 경우입니다.
+`find_matches`에 오류 처리를 추가하세요.
 
 [`writeln!`]: https://doc.rust-lang.org/1.39.0/std/macro.writeln.html
 [`io::Result`]: https://doc.rust-lang.org/1.39.0/std/io/type.Result.html
 
 </aside>
 
-We've just seen how to make this piece of code easily testable.
-We have
+우리는 이제 코드를 쉽게 테스트할 수 있게 하는 방법을 보았습니다.
+우리는
 
-1. identified one of the core pieces of our application,
-2. put it into its own function,
-3. and made it more flexible.
+1. 애플리케이션의 핵심 부분 중 하나를 식별하고,
+2. 그것을 자신의 함수로 묶고,
+3. 더욱 유연하게 만들었습니다.
 
-Even though the goal was to make it testable,
-the result we ended up with
-is actually a very idiomatic and reusable piece of Rust code.
-That's awesome!
+테스트 가능하도록 만들려는 목표였지만,
+결과적으로 얻은 것은
+실제로 매우 고유하고 재사용 가능한 Rust 코드입니다.
+정말 멋지네요!
 
-## Splitting your code into library and binary targets
+## 라이브러리 및 바이너리 타겟으로 코드 분할하기
 
-We can do one more thing here.
-So far we've put everything we wrote into the `src/main.rs` file.
-This means our current project produces a single binary.
-But we can also make our code available as a library, like this:
+우리는 여기에 한 가지 더 할 수 있습니다.
+지금까지 작성한 모든 내용을 `src/main.rs` 파일로 넣었습니다.
+이로 인해 현재 프로젝트는 하나의 바이너리를 생성합니다.
+하지만 코드를 라이브러리로 제공할 수도 있습니다.
 
-1. Put the `find_matches` function into a new `src/lib.rs`.
-2. Add a `pub` in front of the `fn` (so it's `pub fn find_matches`)
-   to make it something that users of our library can access.
-3. Remove `find_matches` from `src/main.rs`.
-4. In the `fn main`, prepend the call to `find_matches` with `grrs::`,
-   so it's now `grrs::find_matches(…)`.
-   This means it uses the function from the library we just wrote!
+1. `find_matches` 함수를 새롭게 만든 `src/lib.rs`로 옮깁니다.
+2. `fn` 앞에 `pub`를 추가하여 `pub fn find_matches`로 만듭니다.
+   이렇게 하면 라이브러리를 사용하는 사용자가 함수에 액세스할 수 있습니다.
+3. `src/main.rs`에서 `find_matches`를 제거합니다.
+4. `fn main`에서 `find_matches` 호출 앞에 `grrs::`를 붙여 `grrs::find_matches(…)`로 만듭니다.
+   이는 우리가 작성한 라이브러리에서 함수를 사용한다는 것을 의미합니다!
 
-The way Rust deals with projects is quite flexible
-and it's a good idea to think about
-what to put into the library part of your crate early on.
-You can for example think about writing a library
-for your application-specific logic first
-and then use it in your CLI just like any other library.
-Or, if your project has multiple binaries,
-you can put the common functionality into the library part of that crate.
+Rust가 프로젝트를 처리하는 방식은 매우 유연하며,
+크레이트의 라이브러리 부분에 무엇을 넣을지에 대한 고려는 초기 단계에서 중요합니다.
+예를 들어, 애플리케이션 고유의 논리를 위한 라이브러리를 먼저 작성하고,
+CLI에서 다른 라이브러리와 마찬가지로 사용할 수 있습니다.
+또는 프로젝트에 여러 바이너리가 있는 경우,
+공통 기능을 해당 크레이트의 라이브러리 부분에 넣을 수 있습니다.
 
 <aside class="note">
 
-**Note:**
-Speaking of putting everything into a `src/main.rs`:
-If we continue to do that,
-it'll become difficult to read.
-The [module system] can help you structure and organize your code.
+**참고:**
+`src/main.rs`에 모든 것을 넣는 것에 대해 말씀드리자면,
+이렇게 계속하면 코드를 읽기 어려워집니다.
+[모듈 시스템]은 코드를 구조화하고 정리하는 데 도움이 될 수 있습니다.
 
-[module system]: https://doc.rust-lang.org/1.39.0/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
+[모듈 시스템]: https://doc.rust-lang.org/1.39.0/book/ch07-00-managing-growing-projects-with-packages-crates-and-modules.html
 
 </aside>
 
 
-## Testing CLI applications by running them
+## CLI 애플리케이션 테스트: 실행을 통한 테스트
 
-Thus far, we've gone out of our way
-to test the _business logic_ of our application,
-which turned out to be the `find_matches` function.
-This is very valuable
-and is a great first step
-towards a well-tested code base.
-(Usually, these kinds of tests are called "unit tests".)
+지금까지 우리는 애플리케이션의 _비즈니스 로직_을 테스트하는 데 집중했습니다.
+이는 `find_matches` 함수였습니다.
+이는 매우 중요하며, 잘 테스트된 코드베이스를 위한 좋은 시작입니다.
+(일반적으로 이러한 유형의 테스트를 '단위 테스트'라고 합니다.)
 
-There is a lot of code we aren't testing, though:
-Everything that we wrote to deal with the outside world!
-Imagine you wrote the main function,
-but accidentally left in a hard-coded string
-instead of using the argument of the user-supplied path.
-We should write tests for that, too!
-(This level of testing is often called
-"integration testing", or "system testing".)
+그러나 우리가 테스트하지 않은 코드가 많습니다.
+즉, 외부 세계와 상호 작용하는 모든 코드입니다!
+만약 `main` 함수를 작성했지만, 사용자 입력 경로의 인수 대신 고정된 문자열을 남겨두었다면 어떨까요?
+우리는 그런 경우에도 테스트를 작성해야 합니다!
+(이러한 수준의 테스트는 종종 '통합 테스트' 또는 '시스템 테스트'라고 합니다.)
 
-At its core,
-we are still writing functions
-and annotating them with `#[test]`.
-It's just a matter of what we do inside these functions.
-For example, we'll want to use the main binary of our project,
-and run it like a regular program.
-We will also put these tests into a new file in a new directory:
-`tests/cli.rs`.
+핵심은 여전히 함수를 작성하고 `#[test]`로 표시하는 것입니다.
+단지 함수 내부에서 무엇을 하는지에 대한 문제입니다.
+예를 들어, 프로젝트의 메인 바이너리를 사용하고 일반 프로그램처럼 실행해야 합니다.
+또한 이러한 테스트를 `tests/cli.rs`와 같은 새로운 디렉토리의 새로운 파일로 넣습니다.
 
 <aside>
 
-**Note:**
-By convention,
-`cargo` will look for integration tests in the `tests/` directory.
-Similarly,
-it will look for benchmarks in `benches/`,
-and examples in `examples/`.
-These conventions also extend to your main source code:
-libraries have a `src/lib.rs` file,
-the main binary is `src/main.rs`,
-or, if there are multiple binaries,
-cargo expects them to be in `src/bin/<name>.rs`.
-Following these conventions will make your code base more discoverable
-by people used to reading Rust code.
+**참고:**
+습관적으로,
+`cargo`는 통합 테스트를 `tests/` 디렉토리에서 찾습니다.
+마찬가지로,
+벤치마크는 `benches/`에서, 예제는 `examples/`에서 찾습니다.
+이러한 규칙은 주요 소스 코드에도 적용됩니다.
+라이브러리는 `src/lib.rs` 파일을 가지고 있으며,
+메인 바이너리는 `src/main.rs`이며,
+여러 바이너리가 있는 경우,
+`cargo`는 `src/bin/<name>.rs`에서 기대합니다.
+이러한 규칙을 따르면 Rust 코드를 읽는 데 익숙한 사람들에게 코드베이스가 더 쉽게 발견됩니다.
 
 </aside>
 
-To recall,
-`grrs` is a small tool that searches for a string in a file.
-We have previously tested that we can find a match.
-Let's think about what other functionality we can test.
+기억하시죠? `grrs`는 파일에서 문자열을 검색하는 작은 도구입니다.
+우리는 이전에 일치하는 항목을 찾을 수 있다는 것을 테스트했습니다.
+다음은 테스트할 수 있는 다른 기능입니다.
 
-Here is what I came up with.
+- 파일이 존재하지 않을 때 어떤 일이 일어나는가?
+- 일치하는 항목이 없을 때 출력은 무엇인가?
+- 인수를 하나(또는 두 개) 잊어버렸을 때 프로그램은 오류로 종료되는가?
 
-- What happens when the file doesn't exist?
-- What is the output when there is no match?
-- Does our program exit with an error when we forget one (or both) arguments?
+이러한 것은 모두 유효한 테스트 케이스입니다.
+또한 '행복한 경로' 테스트 케이스를 포함해야 합니다.
+즉, 적어도 하나의 일치하는 항목을 찾았고 출력했습니다.
 
-These are all valid test cases.
-Additionally,
-we should also include one test case
-for the "happy path",
-i.e., we found at least one match
-and we print it.
-
-To make these kinds of tests easier,
-we're going to use the [`assert_cmd`] crate.
-It has a bunch of neat helpers
-that allow us to run our main binary
-and see how it behaves.
-Further,
-we'll also add the [`predicates`] crate
-which helps us write assertions
-that `assert_cmd` can test against
-(and that have great error messages).
-We'll add those dependencies not to the main list,
-but to a "dev dependencies" section in our `Cargo.toml`.
-They are only required when developing the crate,
-not when using it.
+이러한 유형의 테스트를 수행하기 위해 `assert_cmd` crate를 사용할 것입니다.
+`assert_cmd`는 메인 바이너리를 실행하고 동작을 확인하는 데 유용한 도구를 제공합니다.
+또한 `predicates` crate를 추가하여 `assert_cmd`가 테스트할 수 있는 주장과 훌륭한 오류 메시지를 제공하는 데 도움이 됩니다.
+이러한 의존성은 `Cargo.toml`의 '개발 의존성' 섹션에 추가됩니다.
+이들은 crate를 개발할 때만 필요하며, 사용할 때는 필요하지 않습니다.
 
 ```toml
 {{#include testing/Cargo.toml:16:18}}
@@ -420,43 +340,39 @@ not when using it.
 [`assert_cmd`]: https://docs.rs/assert_cmd
 [`predicates`]: https://docs.rs/predicates
 
-This sounds like a lot of setup.
-Nevertheless –
-let's dive right in
-and create our `tests/cli.rs` file:
+이렇게 설정하는 것은 많이 복잡해 보입니다.
+그럼에도 불구하고
+바로 시작하여 `tests/cli.rs` 파일을 만들어 보겠습니다:
 
 ```rust,ignore
 {{#include testing/tests/cli.rs:1:15}}
 ```
 
-You can run this test with
-`cargo test`,
-just like the tests we wrote above.
-It might take a little longer the first time,
-as `Command::cargo_bin("grrs")` needs to compile your main binary.
+위 테스트를 `cargo test` 명령어로 실행할 수 있습니다.
+위에서 작성한 테스트와 마찬가지로 실행됩니다.
+처음에는 조금 더 오래 걸릴 수 있습니다.
+`Command::cargo_bin("grrs")`가 메인 바이너리를 컴파일해야 하기 때문입니다.
 
-## Generating test files
+## 테스트 파일 생성
 
-The test we've just seen only checks that our program writes an error message
-when the input file doesn't exist.
-That's an important test to have,
-but maybe not the most important one:
-Let's now test that we will actually print the matches we found in a file!
 
-We'll need to have a file whose content we know,
-so that we can know what our program _should_ return
-and check this expectation in our code.
-One idea might be to add a file to the project with custom content
-and use that in our tests.
-Another would be to create temporary files in our tests.
-For this tutorial,
-we'll have a look at the latter approach.
-Mainly, because it is more flexible and will also work in other cases;
-for example, when you are testing programs that change the files.
+지금까지 본 테스트는 프로그램이 입력 파일이 존재하지 않을 때 오류 메시지를 출력하는지 확인하는 것뿐입니다.
+중요한 테스트이지만,
+가장 중요한 테스트는 아닐 수 있습니다.
+이제 프로그램이 파일에서 찾은 일치 항목을 실제로 출력하는지 테스트해 보겠습니다!
 
-To create these temporary files,
-we'll be using the [`assert_fs`] crate.
-Let's add it to the `dev-dependencies` in our `Cargo.toml`:
+프로그램이 _반환해야 하는_ 내용을 알 수 있는 콘텐츠를 가진 파일이 필요합니다.
+이를 통해 코드에서 이 기대 사항을 확인할 수 있습니다.
+한 가지 방법은 프로젝트에 사용자 정의 콘텐츠가 있는 파일을 추가하고 테스트에서 사용하는 것입니다.
+또는 테스트에서 임시 파일을 생성하는 것입니다.
+이 튜토리얼에서는
+후자의 접근 방식을 살펴보겠습니다.
+주로 유연성이 높기 때문이며 다른 경우에도 작동합니다.
+예를 들어, 파일을 변경하는 프로그램을 테스트할 때입니다.
+
+이러한 임시 파일을 생성하려면
+[`assert_fs`] crate를 사용할 것입니다.
+`Cargo.toml`의 `dev-dependencies`에 추가하겠습니다:
 
 ```toml
 {{#include testing/Cargo.toml:19}}
@@ -464,16 +380,15 @@ Let's add it to the `dev-dependencies` in our `Cargo.toml`:
 
 [`assert_fs`]: https://docs.rs/assert_fs
 
-Here is a new test case
-(that you can write below the other one)
-that first creates a temp file
-(a "named" one so we can get its path),
-fills it with some text,
-and then runs our program
-to see if we get the correct output.
-When the `file` goes out of scope
-(at the end of the function),
-the actual temporary file will automatically get deleted.
+다음은 다른 테스트 케이스 아래에 작성할 수 있는 새로운 테스트 케이스입니다.
+먼저 임시 파일을 생성하고
+(이름이 지정되어 있으므로 경로를 가져올 수 있도록),
+그 안에 텍스트를 채우고,
+그런 다음 프로그램을 실행하여
+올바른 출력을 얻는지 확인합니다.
+`file`이 범위를 벗어날 때
+(함수의 끝에서),
+실제 임시 파일은 자동으로 삭제됩니다.
 
 ```rust,ignore
 {{#include testing/tests/cli.rs:17:32}}
@@ -481,50 +396,34 @@ the actual temporary file will automatically get deleted.
 
 <aside class="exercise">
 
-**Exercise for the reader:**
-Add integration tests for passing an empty string as pattern.
-Adjust the program as needed.
+**독자를 위한 연습:**
+패턴으로 빈 문자열을 전달하는 경우 통합 테스트를 추가합니다.
+필요에 따라 프로그램을 조정합니다.
 
 </aside>
 
-## What to test?
+## 테스트할 내용은 무엇인가?
 
-While it can certainly be fun to write integration tests,
-it will also take some time to write them,
-as well as to update them when your application's behavior changes.
-To make sure you use your time wisely,
-you should ask yourself what you should test.
+통합 테스트를 작성하는 것은 분명 재미있지만,
+시간이 오래 걸리고 애플리케이션의 동작이 변경될 때마다 업데이트해야 합니다.
+시간을 효율적으로 사용하려면 테스트할 내용을 신중하게 고려해야 합니다.
 
-In general it's a good idea to write integration tests
-for all types of behavior that a user can observe.
-That means that you don't need to cover all edge cases:
-It usually suffices to have examples for the different types
-and rely on unit tests to cover the edge cases.
+일반적으로 사용자가 관찰할 수 있는 모든 유형의 동작에 대한 통합 테스트를 작성하는 것이 좋습니다.
+즉, 모든 경계 사례를 다루어야 하는 것은 아닙니다.
+다양한 유형의 예제를 가지고 경계 사례를 단위 테스트로 처리하는 것이 일반적으로 충분합니다.
 
-It is also a good idea not to focus your tests on things you can't actively control.
-It would be a bad idea to test the exact layout of `--help`
-as it is generated for you.
-Instead, you might just want to check that certain elements are present.
+또한 직접 제어할 수 없는 것에 집중하지 않는 것이 좋습니다.
+예를 들어, `--help`의 정확한 레이아웃을 테스트하는 것은 생성이 자동화되기 때문에 좋지 않습니다.
+대신, 특정 요소가 존재하는지 확인하는 것만으로도 충분합니다.
 
-Depending on the nature of your program,
-you can also try to add more testing techniques.
-For example,
-if you have extracted parts of your program
-and find yourself writing a lot of example cases as unit tests
-while trying to come up with all the edge cases,
-you should look into [`proptest`].
-If you have a program which consumes arbitrary files and parses them,
-try to write a [fuzzer] to find bugs in edge cases.
-
-[`proptest`]: https://docs.rs/proptest
-[fuzzer]: https://rust-fuzz.github.io/book/introduction.html
+프로그램의 특성에 따라 더 많은 테스트 기법을 추가할 수도 있습니다.
+예를 들어, 프로그램의 일부를 추출하고 단위 테스트를 작성하면서 모든 경계 사례를 고려해야 하는 경우 [`proptest`](https://docs.rs/proptest)를 사용해 볼 수 있습니다.
+임의의 파일을 소비하고 분석하는 프로그램이라면 [fuzzer](https://rust-fuzz.github.io/book/introduction.html)를 작성하여 경계 사례에서 버그를 찾는 것이 좋습니다.
 
 <aside>
 
-**Note:**
-You can find the full, runnable source code used in this chapter
-[in this book's repository][src].
-
-[src]: https://github.com/rust-cli/book/tree/master/src/tutorial/testing
+**참고:**
+이 장에서 사용된 전체 실행 가능한 소스 코드는
+[이 책의 저장소](https://github.com/rust-cli/book/tree/master/src/tutorial/testing)에서 찾을 수 있습니다.
 
 </aside>

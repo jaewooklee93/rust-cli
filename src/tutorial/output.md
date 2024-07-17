@@ -1,68 +1,64 @@
-# Output
+# 출력
 
-## Printing "Hello World"
+## "Hello World" 출력하기
 
 ```rust
 println!("Hello World");
 ```
 
-Well, that was easy.
-Great, onto the next topic.
+잘했어요.
+좋아요, 다음 주제로 넘어가요.
 
-## Using `println!`
+## `println!` 사용하기
 
-You can pretty much print all the things you like
-with the `println!` macro.
-This macro has some pretty amazing capabilities,
-but also a special syntax.
-It expects you to write a string literal as the first parameter,
-that contains placeholders that will be filled in
-by the values of the parameters that follow as further arguments.
+`println!` 매크로를 사용하면 좋아하는 것들을 거의 모두 출력할 수 있습니다.
+이 매크로는 꽤 놀라운 기능을 가지고 있지만,
+특별한 문법을 가지고 있습니다.
+첫 번째 매개변수로 문자열 리터럴을 작성해야 하며,
+이 문자열 리터럴에는 다음과 같은 매개변수 값으로 채워질 홀더가 포함되어 있어야 합니다.
 
-For example:
+예를 들어:
 
 ```rust
 let x = 42;
 println!("My lucky number is {}.", x);
 ```
 
-will print
+출력될 내용
 
 ```console
 My lucky number is 42.
 ```
 
-The curly braces (`{}`) in the string above is one of these placeholders.
-This is the default placeholder type
-that tries to print the given value in a human readable way.
-For numbers and strings this works very well,
-but not all types can do that.
-This is why there is also a "debug representation",
-that you can get by filling the braces of the placeholder like this: `{:?}`.
+위 문자열에서 중괄호 (`{}`)는 이러한 占位符 중 하나입니다.
 
-For example,
+이는 주어진 값을 인간이 읽기 쉽게 출력하려는 기본 占位符 유형입니다.
+숫자와 문자열의 경우 이 방법이 매우 잘 작동하지만,
+모든 유형에 대해서는 그렇지 않습니다.
+이 때문에 `{:?}`와 같이 중괄호를 채워서 "디버그 표현"을 얻을 수 있습니다.
+
+예를 들어,
 
 ```rust
 let xs = vec![1, 2, 3];
 println!("The list is: {:?}", xs);
 ```
 
-will print
+출력될 내용
 
 ```console
 The list is: [1, 2, 3]
 ```
 
-If you want your own data types to be printable for debugging and logging,
-you can in most cases add a `#[derive(Debug)]` above their definition.
+디버깅 및 로그 기록을 위해 자신의 데이터 유형을 인쇄하려면,
+대부분의 경우 정의 위에 `#[derive(Debug)]`를 추가할 수 있습니다.
 
 <aside>
 
-**Note:**
-"User-friendly" printing is done using the [`Display`] trait,
-debug output (human-readable but targeted at developers) uses the [`Debug`] trait.
-You can find more information about the syntax you can use in `println!`
-in the [documentation for the `std::fmt` module][std::fmt].
+**참고:**
+"사용자 친화적인" 인쇄는 [`Display`] 트레이트를 사용하여 수행되며,
+디버그 출력 (개발자를 위한 가독성이 있는)은 [`Debug`] 트레이트를 사용합니다.
+`println!`에서 사용할 수 있는 구문에 대한 자세한 내용은 [ `std::fmt` 모듈 문서][std::fmt]를 참조하십시오.
 
 [`Display`]: https://doc.rust-lang.org/1.39.0/std/fmt/trait.Display.html
 [`Debug`]: https://doc.rust-lang.org/1.39.0/std/fmt/trait.Debug.html
@@ -70,31 +66,24 @@ in the [documentation for the `std::fmt` module][std::fmt].
 
 </aside>
 
-## Printing errors
+## 오류 출력
 
-Printing errors should be done via `stderr`
-to make it easier for users
-and other tools
-to pipe their outputs to files
-or more tools.
+오류 출력은 `stderr`를 통해 수행되어야 하며,
+이를 통해 사용자와 다른 도구가 출력을 파일이나 다른 도구로 파이프할 수 있도록 돕습니다.
 
 <aside>
 
-**Note:**
-On most operating systems,
-a program can write to two output streams, `stdout` and `stderr`.
-`stdout` is for the program's actual output,
-while `stderr` allows errors and other messages to be kept separate from `stdout`.
-That way,
-output can be stored to a file or piped to another program
-while errors are shown to the user.
+**참고:**
+대부분의 운영 체제에서 프로그램은 `stdout`와 `stderr`라는 두 개의 출력 스트림으로 쓰기 가능합니다.
+`stdout`는 프로그램의 실제 출력을 위해 사용되며,
+`stderr`는 오류 및 기타 메시지를 `stdout`에서 분리하여 표시할 수 있도록 합니다.
+이렇게 하면 출력을 파일로 저장하거나 다른 프로그램으로 파이프할 수 있으면서도 오류가 사용자에게 표시됩니다.
 
 </aside>
 
-In Rust this is achieved
-with `println!` and `eprintln!`,
-the former printing to `stdout`
-and the latter to `stderr`.
+Rust에서는 `println!`과 `eprintln!`을 사용하여 이를 달성합니다.
+`println!`은 `stdout`로 출력하고,
+`eprintln!`은 `stderr`로 출력합니다.
 
 ```rust
 println!("This is information");
@@ -103,36 +92,34 @@ eprintln!("This is an error! :(");
 
 <aside>
 
-**Beware**: Printing [escape codes] can be dangerous,
-putting the user's terminal into a weird state.
-Always be careful when manually printing them!
+**주의**: 이스케이프 코드를 출력하는 것은 위험할 수 있습니다.
+터미널 상태를 이상하게 만들 수 있습니다.
+수동으로 출력할 때 항상 주의하십시오!
 
-[escape codes]: https://en.wikipedia.org/wiki/ANSI_escape_code
+[이스케이프 코드]: https://ko.wikipedia.org/wiki/ANSI_escape_code
 
-Ideally you should be using a crate like `ansi_term`
-when dealing with raw escape codes
-to make your (and your user's) life easier.
+가능하다면 `ansi_term`과 같은 crate를 사용하여 원본 이스케이프 코드를 처리하는 것이 좋습니다.
+그렇게 하면 (당신과 사용자 모두의) 삶이 더 쉬워집니다.
 
 </aside>
 
-## A note on printing performance
+## 출력 성능에 대한 주의 사항
 
-Printing to the terminal is surprisingly slow!
-If you call things like `println!` in a loop,
-it can easily become a bottleneck in an otherwise fast program.
-To speed this up,
-there are two things you can do.
+터미널에 출력하는 것은 놀랍게도 느리다!
+`println!`과 같은 함수를 루프에서 호출하면,
+그렇지 않은 경우에도 빠른 프로그램에서 쉽게 병목 현상이 발생할 수 있습니다.
+이를 가속화하려면,
+두 가지 작업을 수행할 수 있습니다.
 
-First,
-you might want to reduce the number of writes
-that actually "flush" to the terminal.
-`println!` tells the system to flush to the terminal _every_ time,
-because it is common to print each new line.
-If you don't need that,
-you can wrap your `stdout` handle in a [`BufWriter`]
-which by default buffers up to 8 kB.
-(You can still call `.flush()` on this `BufWriter`
-when you want to print immediately.)
+첫째,
+실제로 "터미널에 플러시"하는 쓰기 횟수를 줄일 수 있습니다.
+`println!`은 시스템에 매번 터미널에 플러시하도록 알립니다.
+bởi vì 각 새 줄을 출력하는 것이 일반적입니다.
+필요하지 않으면,
+`stdout` 핸들을 [`BufWriter`]
+에 감싸면 됩니다.
+이는 기본적으로 8 kB까지 버퍼링합니다.
+(여전히 `BufWriter`에 `.flush()`를 호출하여 즉시 출력할 수 있습니다.)
 
 ```rust
 use std::io::{self, Write};
@@ -142,10 +129,8 @@ let mut handle = io::BufWriter::new(stdout); // optional: wrap that handle in a 
 writeln!(handle, "foo: {}", 42); // add `?` if you care about errors here
 ```
 
-Second,
-it helps to acquire a lock on `stdout` (or `stderr`)
-and use `writeln!` to print to it directly.
-This prevents the system from locking and unlocking `stdout` over and over again.
+두 번째로, `stdout` (또는 `stderr`) 에 대한 잠금을 획득하고 `writeln!` 을 사용하여 직접 출력하는 것이 도움이 됩니다.
+이렇게 하면 시스템이 `stdout` 를 반복적으로 잠금 해제하는 것을 방지할 수 있습니다.
 
 ```rust
 use std::io::{self, Write};
@@ -155,80 +140,61 @@ let mut handle = stdout.lock(); // acquire a lock on it
 writeln!(handle, "foo: {}", 42); // add `?` if you care about errors here
 ```
 
-You can also combine the two approaches.
+두 가지 접근 방식을 결합할 수도 있습니다.
 
 [`BufWriter`]: https://doc.rust-lang.org/1.39.0/std/io/struct.BufWriter.html
 
-## Showing a progress bar
+## 진행 상황 표시줄 표시하기
 
-Some CLI applications run less than a second,
-others take minutes or hours.
-If you are writing one of the latter types of programs,
-you might want to show the user that something is happening.
-For this, you should try to print useful status updates,
-ideally in a form that can be easily consumed.
+일부 CLI 애플리케이션은 1초 미만으로 실행되지만,
+다른 애플리케이션은 몇 분 또는 몇 시간이 걸릴 수 있습니다.
+만약 후자 유형의 프로그램을 작성하고 있다면,
+사용자에게 무언가가 일어나고 있음을 알려주는 것이 좋습니다.
+이를 위해 유용한 상태 업데이트를 출력해야 하며,
+가능하면 쉽게 소비할 수 있는 형식으로 출력해야 합니다.
 
-Using the [indicatif] crate,
-you can add progress bars
-and little spinners to your program.
-Here's a quick example:
+[indicatif] crate를 사용하면 프로그램에 진행 상황 표시줄과 작은 스피너를 추가할 수 있습니다.
+다음은 간단한 예입니다:
 
 ```rust,ignore
 {{#include output-progressbar.rs:1:9}}
 ```
 
-See the [documentation][indicatif docs]
-and [examples][indicatif examples]
-for more information.
+더 자세한 내용은 [문서][indicatif docs]
+및 [예제][indicatif examples]
+을 참조하십시오.
 
 [indicatif]: https://crates.io/crates/indicatif
 [indicatif docs]: https://docs.rs/indicatif
 [indicatif examples]: https://github.com/console-rs/indicatif/tree/main/examples
 
-## Logging
+## 로그 기록
 
-To make it easier to understand what is happening in our program,
-we might want to add some log statements.
-This is usually easy while writing your application.
-But it will become super helpful when running this program again in half a year.
-In some regard,
-logging is the same as using `println!`,
-except that you can specify the importance of a message.
-The levels you can usually use are _error_, _warn_, _info_, _debug_, and _trace_
-(_error_ has the highest priority, _trace_ the lowest).
+프로그램에서 일어나는 일을 더 쉽게 이해하기 위해,
+로그 문을 추가하는 것이 좋습니다.
+일반적으로 애플리케이션을 작성하는 동안에는 쉽습니다.
+하지만 6개월 후에 이 프로그램을 다시 실행할 때 매우 유용합니다.
+어느 정도로 로그 기록은 `println!`과 동일합니다.
+단, 메시지의 중요도를 지정할 수 있습니다.
+일반적으로 사용할 수 있는 레벨은 _오류_, _경고_, _정보_, _디버그_, 및 _추적_입니다.
+(_오류_가 가장 높은 우선순위를 가지고, _추적_은 가장 낮습니다).
 
-To add simple logging to your application,
-you'll need two things:
-The [log] crate (this contains macros named after the log level)
-and an _adapter_ that actually writes the log output somewhere useful.
-Having the ability to use log adapters is very flexible:
-You can, for example, use them to write logs not only to the terminal
-but also to [syslog], or to a central log server.
+간단한 로그 기록을 애플리케이션에 추가하려면,
+두 가지가 필요합니다.
+[log] crate (로그 레벨에 따라 이름이 지정된 매크로를 포함) 및 실제로 로그 출력을 유용한 곳으로 작성하는 _어댑터_입니다.
+로그 어댑터를 사용할 수 있는 것은 매우 유연합니다.
+예를 들어, 로그를 콘솔뿐만 아니라 [syslog] 또는 중앙 로그 서버로 작성할 수 있습니다.
 
-[syslog]: https://en.wikipedia.org/wiki/Syslog
+[syslog]: https://ko.wikipedia.org/wiki/Syslog
 
-Since we are right now only concerned with writing a CLI application,
-an easy adapter to use is [env_logger].
-It's called "env" logger because you can
-use an environment variable to specify which parts of your application
-you want to log
-(and at which level you want to log them).
-It will prefix your log messages with a timestamp
-and the module where the log messages come from.
-Since libraries can also use `log`,
-you easily configure their log output, too.
-
-[log]: https://crates.io/crates/log
-[env_logger]: https://crates.io/crates/env_logger
-
-Here's a quick example:
-
+현재 우리가 CLI 애플리케이션을 작성하고 있기 때문에,
+사용하기 쉬운 어댑터는 [env_logger]입니다.
 ```rust,ignore
 {{#include output-log.rs}}
 ```
 
-Assuming you have this file as `src/bin/output-log.rs`,
-on Linux and macOS, you can run it like this:
+ `src/bin/output-log.rs` 파일이 있다고 가정하면,
+Linux와 macOS에서 다음과 같이 실행할 수 있습니다:
 ```console
 $ env RUST_LOG=info cargo run --bin output-log
     Finished dev [unoptimized + debuginfo] target(s) in 0.17s
@@ -237,7 +203,7 @@ $ env RUST_LOG=info cargo run --bin output-log
 [2018-11-30T20:25:52Z WARN  output_log] oops, nothing implemented!
 ```
 
-In Windows PowerShell, you can run it like this:
+Windows PowerShell에서 실행하면 다음과 같습니다.
 ```console
 $ $env:RUST_LOG="info"
 $ cargo run --bin output-log
@@ -247,7 +213,7 @@ $ cargo run --bin output-log
 [2018-11-30T20:25:52Z WARN  output_log] oops, nothing implemented!
 ```
 
-In Windows CMD, you can run it like this:
+Windows CMD에서 실행하면 다음과 같습니다.
 ```console
 $ set RUST_LOG=info
 $ cargo run --bin output-log
@@ -257,29 +223,22 @@ $ cargo run --bin output-log
 [2018-11-30T20:25:52Z WARN  output_log] oops, nothing implemented!
 ```
 
-`RUST_LOG` is the name of the environment variable
-you can use to set your log settings.
-`env_logger` also contains a builder
-so you can programmatically adjust these settings,
-and, for example, also show _info_ level messages by default.
+`RUST_LOG` 환경 변수를 사용하여 로그 설정을 변경할 수 있습니다.
+`env_logger`는 프로그래밍적으로 설정을 조정할 수 있는 빌더도 제공합니다.
+예를 들어, 기본적으로 _info_ 레벨 메시지를 표시하도록 설정할 수 있습니다.
 
-There are a lot of alternative logging adapters out there,
-and also alternatives or extensions to `log`.
-If you know your application will have a lot to log,
-make sure to review them,
-and make your users' life easier.
+다양한 대체 로그 어댑터와 `log`의 대안 또는 확장 기능이 있습니다.
+응용 프로그램에 많은 로그가 필요하다면, 이러한 옵션을 검토하고 사용자의 작업을 더욱 쉽게 만들어 주세요.
 
 <aside>
 
-**Tip:**
-Experience has shown that even mildly useful CLI programs can end up being used for years to come.
-(Especially if they were meant as a temporary solution.)
-If your application doesn't work
-and someone (e.g., you, in the future) needs to figure out why,
-being able to pass `--verbose` to get additional log output
-can make the difference between minutes and hours of debugging.
-The [clap-verbosity-flag] crate contains a quick way
-to add a `--verbose` to a project using `clap`.
+**팁:**
+경험에 따르면, 심지어 약간 유용한 CLI 프로그램도 오랫동안 사용될 수 있습니다.
+(특히 일시적인 해결책으로 만들어졌을 때)
+응용 프로그램이 작동하지 않고 누군가(예: 미래의 당신)가 원인을 파악해야 하는 경우,
+`--verbose`를 전달하여 추가 로그 출력을 얻을 수 있도록 하는 것은
+디버깅 시간을 분에서 시간으로 줄이는 데 도움이 될 수 있습니다.
+[clap-verbosity-flag] crate는 `clap`를 사용하여 프로젝트에 `--verbose`를 빠르게 추가하는 방법을 제공합니다.
 
 [clap-verbosity-flag]: https://crates.io/crates/clap-verbosity-flag
 

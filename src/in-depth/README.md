@@ -1,4 +1,3 @@
-# In-depth topics
+# 심층 주제
 
-A small collection of chapters covering some more details
-that you might care about when writing your command line application.
+명령줄 응용 프로그램을 작성할 때 관심을 가질 수 있는 몇 가지 자세한 내용을 다루는 챕터 모음입니다.
