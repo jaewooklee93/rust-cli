@@ -1,0 +1,21 @@
+@font-face{
+    font-family:'Pretendard Variable';
+    font-weight:45 920;font-style:normal;
+    font-display:swap;
+    src:url('../fonts/PretendardVariable.woff2') format('woff2-variations')}
+
+.ayu {
+    --bg:#111;
+    --fg : #eee;
+    --scrollbar: #333;
+}
+
+* {
+    font-family: "Pretendard Variable";
+    --mono-font: "Source Code Pro", "Pretendard Variable", monospace !important;
+}
+
+code * {
+    font-family: "Source Code Pro";
+}
+

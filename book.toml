@@ -15,6 +15,7 @@ additional-css = [
 ]
 git-repository-url = "https://github.com/jaewooklee93/rust-cli"
 site-url = "/book/"
+preferred-dark-theme = "ayu"
 
 # Linkcheck doesn't find images/SVG so it's not enabled for now
 # [output.linkcheck]
